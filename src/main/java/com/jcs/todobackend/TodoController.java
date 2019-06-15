@@ -11,6 +11,7 @@ import static org.springframework.web.bind.annotation.RequestMethod.POST;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Optional;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -39,12 +40,16 @@ public class TodoController {
 
   @RequestMapping(method = GET, value = "/{todo-id}")
   public HttpEntity<Todo> get(@PathVariable("todo-id") long id) {
-    ResponseEntity<Todo> entity = todos.stream()
-        .filter(t -> t.getId() == id)
-        .findFirst()
+    ResponseEntity<Todo> entity = findById(id)
         .map(todo -> new ResponseEntity<>(todo, HttpStatus.OK))
         .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     return entity;
+  }
+
+  private Optional<Todo> findById(long id) {
+    return todos.stream()
+        .filter(t -> t.getId() == id)
+        .findFirst();
   }
 
   @RequestMapping(method = POST)
@@ -58,6 +63,13 @@ public class TodoController {
   @RequestMapping(method = DELETE)
   public void deleteAll() {
     todos.clear();
+  }
+
+  @RequestMapping(method = PATCH, value = "/{todo-id}")
+  public Todo update(@PathVariable("todo-id") long id, @RequestBody Todo updatedTodo) {
+    return findById(id)
+        .map(todo -> todo.merge(updatedTodo))
+        .orElse(null);
   }
 
   private String getHref(Todo todo) {

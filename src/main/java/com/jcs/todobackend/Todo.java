@@ -41,4 +41,12 @@ public class Todo {
   public void setCompleted(boolean completed) {
     this.completed = completed;
   }
+
+  public Todo merge(Todo updatedTodo) {
+    if (updatedTodo.title != null) {
+      this.title = updatedTodo.title;
+    }
+    this.completed = updatedTodo.completed;
+    return this;
+  }
 }

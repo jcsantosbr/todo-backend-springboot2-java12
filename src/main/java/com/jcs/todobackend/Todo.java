@@ -2,10 +2,19 @@ package com.jcs.todobackend;
 
 public class Todo {
 
+  private String url = "";
   private String title;
   private boolean completed;
 
   public Todo() {
+  }
+
+  public String getUrl() {
+    return url;
+  }
+
+  public void setUrl(String url) {
+    this.url = url;
   }
 
   public String getTitle() {

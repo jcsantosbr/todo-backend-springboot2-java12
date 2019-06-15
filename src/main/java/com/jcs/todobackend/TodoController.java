@@ -65,6 +65,11 @@ public class TodoController {
     todos.clear();
   }
 
+  @RequestMapping(method = DELETE, value = "/{todo-id}" )
+  public void delete(@PathVariable("todo-id") long id) {
+    todos.removeIf(todo -> todo.getId() == id);
+  }
+
   @RequestMapping(method = PATCH, value = "/{todo-id}")
   public Todo update(@PathVariable("todo-id") long id, @RequestBody Todo updatedTodo) {
     return findById(id)

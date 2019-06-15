@@ -1,22 +1,22 @@
 package com.jcs.todobackend;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public class Todo {
 
-  private String url;
   private long id;
   private String title;
   private boolean completed;
-  private Long order = 0L;
+  private Long order;
 
-  public Todo() {
-  }
-
-  public String getUrl() {
-    return url;
-  }
-
-  public void setUrl(String url) {
-    this.url = url;
+  @JsonCreator
+  public Todo(@JsonProperty("title") String title,
+              @JsonProperty(value = "completed") boolean completed,
+              @JsonProperty(value = "order") long order) {
+    this.title = title;
+    this.completed = completed;
+    this.order = order;
   }
 
   public long getId() {
@@ -31,24 +31,12 @@ public class Todo {
     return title;
   }
 
-  public void setTitle(String title) {
-    this.title = title;
-  }
-
   public boolean isCompleted() {
     return completed;
   }
 
-  public void setCompleted(boolean completed) {
-    this.completed = completed;
-  }
-
   public long getOrder() {
     return order;
-  }
-
-  public void setOrder(long order) {
-    this.order = order;
   }
 
   public Todo merge(Todo updatedTodo) {
@@ -56,7 +44,7 @@ public class Todo {
       this.title = updatedTodo.title;
     }
     this.completed = updatedTodo.completed;
-    if (updatedTodo.order != null ) {
+    if (updatedTodo.order != null) {
       this.order = updatedTodo.order;
     }
     return this;

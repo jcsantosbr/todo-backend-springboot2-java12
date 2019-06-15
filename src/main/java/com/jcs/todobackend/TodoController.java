@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -34,16 +35,13 @@ public class TodoController {
   private List<Todo> todos = new ArrayList<>();
 
   @RequestMapping(method = GET)
-  public Collection<Todo> listAll() {
-    return todos;
+  public Collection<Resource<Todo>> listAll() {
+    return todos.stream().map(t -> new Resource<>(t, getHref(t))).collect(Collectors.toList());
   }
 
   @RequestMapping(method = GET, value = "/{todo-id}")
-  public HttpEntity<Todo> get(@PathVariable("todo-id") long id) {
-    ResponseEntity<Todo> entity = findById(id)
-        .map(todo -> new ResponseEntity<>(todo, HttpStatus.OK))
-        .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
-    return entity;
+  public HttpEntity<Resource<Todo>> get(@PathVariable("todo-id") long id) {
+    return respond(findById(id));
   }
 
   private Optional<Todo> findById(long id) {
@@ -53,11 +51,10 @@ public class TodoController {
   }
 
   @RequestMapping(method = POST)
-  public Todo add(@RequestBody Todo todo) {
+  public Resource<Todo> add(@RequestBody Todo todo) {
     todo.setId(todos.size());
-    todo.setUrl(getHref(todo));
     todos.add(todo);
-    return todo;
+    return new Resource<>(todo, getHref(todo));
   }
 
   @RequestMapping(method = DELETE)
@@ -65,16 +62,21 @@ public class TodoController {
     todos.clear();
   }
 
-  @RequestMapping(method = DELETE, value = "/{todo-id}" )
+  @RequestMapping(method = DELETE, value = "/{todo-id}")
   public void delete(@PathVariable("todo-id") long id) {
     todos.removeIf(todo -> todo.getId() == id);
   }
 
   @RequestMapping(method = PATCH, value = "/{todo-id}")
-  public Todo update(@PathVariable("todo-id") long id, @RequestBody Todo updatedTodo) {
-    return findById(id)
-        .map(todo -> todo.merge(updatedTodo))
-        .orElse(null);
+  public HttpEntity<Resource<Todo>> update(@PathVariable("todo-id") long id,
+                                           @RequestBody Todo updatedTodo) {
+    return respond(findById(id).map(todo -> todo.merge(updatedTodo)));
+  }
+
+  private HttpEntity<Resource<Todo>> respond(Optional<Todo> maybeTodo) {
+    return maybeTodo
+        .map(todo -> new ResponseEntity<>(new Resource<>(todo, getHref(todo)), HttpStatus.OK))
+        .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
   }
 
   private String getHref(Todo todo) {

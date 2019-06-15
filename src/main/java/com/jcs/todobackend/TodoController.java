@@ -31,4 +31,7 @@ public class TodoController {
     return todo;
   }
 
+  @RequestMapping(method = DELETE)
+  public void deleteAll() {}
+
 }

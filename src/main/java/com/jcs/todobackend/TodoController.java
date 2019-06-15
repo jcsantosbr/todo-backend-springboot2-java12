@@ -6,8 +6,9 @@ import static org.springframework.web.bind.annotation.RequestMethod.OPTIONS;
 import static org.springframework.web.bind.annotation.RequestMethod.PATCH;
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
 
+import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
+import java.util.List;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -23,17 +24,22 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/todos")
 public class TodoController {
 
+  private List<Todo> todos = new ArrayList<>();
+
   @RequestMapping(method = GET)
   public Collection<Todo> index() {
-    return Collections.emptyList();
+    return todos;
   }
 
   @RequestMapping(method = POST)
   public Todo add(@RequestBody Todo todo) {
+    todos.add(todo);
     return todo;
   }
 
   @RequestMapping(method = DELETE)
-  public void deleteAll() {}
+  public void deleteAll() {
+    todos.clear();
+  }
 
 }

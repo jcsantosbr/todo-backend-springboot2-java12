@@ -6,7 +6,7 @@ public class Todo {
   private long id;
   private String title;
   private boolean completed;
-  private long order;
+  private Long order = 0L;
 
   public Todo() {
   }
@@ -56,6 +56,9 @@ public class Todo {
       this.title = updatedTodo.title;
     }
     this.completed = updatedTodo.completed;
+    if (updatedTodo.order != null ) {
+      this.order = updatedTodo.order;
+    }
     return this;
   }
 }

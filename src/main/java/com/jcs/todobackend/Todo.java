@@ -2,7 +2,8 @@ package com.jcs.todobackend;
 
 public class Todo {
 
-  private String url = "";
+  private String url;
+  private long id;
   private String title;
   private boolean completed;
 
@@ -15,6 +16,14 @@ public class Todo {
 
   public void setUrl(String url) {
     this.url = url;
+  }
+
+  public long getId() {
+    return id;
+  }
+
+  public void setId(long id) {
+    this.id = id;
   }
 
   public String getTitle() {

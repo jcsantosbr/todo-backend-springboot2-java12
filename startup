@@ -1,0 +1,2 @@
+export SERVER_PORT=$PORT
+java -jar build/libs/todobackend-0.0.1-SNAPSHOT.jar

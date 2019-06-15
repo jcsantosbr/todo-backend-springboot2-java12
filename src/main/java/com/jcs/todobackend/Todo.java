@@ -6,6 +6,7 @@ public class Todo {
   private long id;
   private String title;
   private boolean completed;
+  private long order;
 
   public Todo() {
   }
@@ -40,6 +41,14 @@ public class Todo {
 
   public void setCompleted(boolean completed) {
     this.completed = completed;
+  }
+
+  public long getOrder() {
+    return order;
+  }
+
+  public void setOrder(long order) {
+    this.order = order;
   }
 
   public Todo merge(Todo updatedTodo) {

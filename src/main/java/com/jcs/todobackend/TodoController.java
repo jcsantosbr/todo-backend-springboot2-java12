@@ -7,6 +7,7 @@ import static org.springframework.web.bind.annotation.RequestMethod.PATCH;
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
 
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -23,6 +24,11 @@ public class TodoController {
   @RequestMapping(method = GET)
   public String index() {
     return "ping";
+  }
+
+  @RequestMapping(method = POST)
+  public Todo add(@RequestBody Todo todo) {
+    return todo;
   }
 
 }

@@ -25,4 +25,11 @@ public class Resource<T> {
     return url;
   }
 
+  @Override
+  public String toString() {
+    return "Resource{" +
+        "url='" + url + '\'' +
+        ", content=" + content +
+        '}';
+  }
 }

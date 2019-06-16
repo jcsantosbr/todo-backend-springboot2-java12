@@ -2,13 +2,13 @@ package com.jcs.todobackend;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.Optional;
 
 public class Todo {
 
-  private long id;
-  private String title;
-  private boolean completed;
-  private Long order;
+  private final String title;
+  private final boolean completed;
+  private final Long order;
 
   @JsonCreator
   public Todo(@JsonProperty("title") String title,
@@ -17,14 +17,6 @@ public class Todo {
     this.title = title;
     this.completed = completed;
     this.order = order;
-  }
-
-  public long getId() {
-    return id;
-  }
-
-  public void setId(long id) {
-    this.id = id;
   }
 
   public String getTitle() {
@@ -39,14 +31,20 @@ public class Todo {
     return order;
   }
 
-  public Todo merge(Todo updatedTodo) {
-    if (updatedTodo.title != null) {
-      this.title = updatedTodo.title;
-    }
-    this.completed = updatedTodo.completed;
-    if (updatedTodo.order != null) {
-      this.order = updatedTodo.order;
-    }
-    return this;
+  @Override
+  public String toString() {
+    return "Todo{" +
+        "title='" + title + '\'' +
+        ", completed=" + completed +
+        ", order=" + order +
+        '}';
+  }
+
+  Todo merge(Todo updatedTodo) {
+    return new Todo(
+        Optional.ofNullable(updatedTodo.title).orElse(title),
+        updatedTodo.completed,
+        Optional.ofNullable(updatedTodo.order).orElse(order)
+    );
   }
 }

@@ -46,7 +46,7 @@ public class TodoController {
 
   @RequestMapping(method = POST)
   public Resource<Todo> add(@RequestBody Todo todo) {
-    UUID id = generateId();
+    var id = UUID.randomUUID();
     Resource<Todo> resource = new Resource<>(todo, getHref(id));
     mapTodos.put(id, resource);
     return resource;
@@ -78,10 +78,6 @@ public class TodoController {
 
   private String getHref(UUID id) {
     return linkTo(methodOn(this.getClass()).get(id)).withSelfRel().getHref();
-  }
-
-  private UUID generateId() {
-    return UUID.randomUUID();
   }
 
 }

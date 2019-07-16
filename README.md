@@ -11,3 +11,4 @@ There is no tests in the repository.
 You can test the behavior running the service locally and running the specs directly here:
 `https://www.todobackend.com/specs/index.html?http://localhost:8080/todos`
 
+The service is running at: https://todo-back-springboot220-java12.herokuapp.com/todos
